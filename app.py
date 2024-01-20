@@ -4,8 +4,12 @@ from Translate import *
 import streamlit as st
 import cv2
 
-# modelURL = 'http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_mobilenet_v2_fpnlite_640x640_coco17_tpu-8.tar.gz'
-modelURL = 'http://download.tensorflow.org/models/object_detection/tf2/20200711/efficientdet_d4_coco17_tpu-32.tar.gz'
+# modelFile = 'ssd_mobilenet_v2_fpnlite_640x640_coco17_tpu-8.tar.gz'
+# modelFile = 'efficientdet_d4_coco17_tpu-32.tar.gz'
+# modelFile = 'efficientdet_d3_coco17_tpu-32.tar.gz'
+modelFile = 'efficientdet_d1_coco17_tpu-32.tar.gz'
+
+modelURL = 'http://download.tensorflow.org/models/object_detection/tf2/20200711/' + modelFile
 
 classFile = 'coco.names'
 imagePath = "/test/000000000632_jpg.rf.bfddd0d2b86ac2bf1e80624422433f0a.jpg"
@@ -47,7 +51,7 @@ def main():
     with col1:
         st.text("Choose your language : ")
     with col2:
-        selected_language = col2.selectbox('', language_options)
+        selected_language = col2.selectbox(' ', language_options)
         translate.target_language = selected_language
 
     # # cap = cv2.VideoCapture(0)
@@ -80,6 +84,7 @@ def main():
     if image:
         bytes_data = image.getvalue()
         image = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
 
         image_with_bounding_boxes = detector.createBoundingBox(image, threshold)
         st.image(image_with_bounding_boxes)
@@ -89,7 +94,7 @@ def main():
         for i in detected_objects:
             st.text(i)
 
-        st.text('The detected objects in ' + selected_language + ' is called :')
+        st.text('The detected object(s) in ' + selected_language + ' is(are) called :')
         for i in detected_objects:
             st.text(i + ' - ' + translate.translate(i))
 
