@@ -1,6 +1,5 @@
-﻿numpy~=1.26.3
-streamlit~=1.30.0
-opencv-python~=4.9.0.80
+﻿numpy
+streamlit
 opencv-python-headless
-tensorflow~=2.15.0
-requests~=2.31.0
+tensorflow
+requests
